@@ -45,6 +45,7 @@ module.exports = {
       optionalDependencies: ['test/unit/index.js'],
     }],
     'indent': 'off',
+    'object-curly-spacing': 'off',
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },

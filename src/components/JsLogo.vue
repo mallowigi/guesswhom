@@ -57,7 +57,9 @@
        */
       logoUrl(val) {
         this.show = false;
-        setTimeout(() => this.show = true, 1);
+        setTimeout(() => {
+          this.show = true;
+        }, 1);
       },
     },
   };
