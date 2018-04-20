@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <progress-bar></progress-bar>
+    <sound-toggle></sound-toggle>
     <router-view v-on:save-score="saveScore"></router-view>
   </div>
 </template>
@@ -10,6 +11,7 @@
   import 'firebase/auth';
   import {mapActions, mapGetters} from 'vuex';
   import ProgressBar from './components/ProgressBar';
+  import SoundToggle from './components/SoundToggle';
 
   const config = {
     apiKey: 'AIzaSyC940dirP-cnec8FFczul_ClGVmMOwiPtU',
@@ -24,6 +26,7 @@
     name: 'App',
     components: {
       ProgressBar,
+      SoundToggle,
     },
     created() {
       this.initFirebase();

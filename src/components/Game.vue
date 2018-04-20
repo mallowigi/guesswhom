@@ -36,19 +36,23 @@
         'increaseCount',
         'setCurrentLogo',
         'setChoices',
+        'playSound',
       ]),
       checkAnswer(id) {
         if (this.currentLogo.id === id) {
           this.increaseCount();
 
           if (this.answerCount === this.amount) {
+            this.playSound('finish');
             this.finishGame();
             this.$emit('save-score');
           } else {
+            this.playSound('correct');
             this.setCurrentLogo(this.logos[this.answerCount]);
             this.setChoices();
           }
         } else {
+          this.playSound('fail');
           this.finishGame();
           this.$emit('save-score');
         }
