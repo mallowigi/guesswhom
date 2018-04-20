@@ -23,4 +23,46 @@
 </script>
 
 <style>
+  html {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  #app {
+    margin-top: -50px;
+    max-width: 600px;
+    font-family: Source Sans Pro, Helvetica, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media screen and (max-height: 500px) {
+    .credits {
+      display: none;
+    }
+
+    #app {
+      margin-top: 0px;
+    }
+  }
+
+  @media screen and (max-width: 447px) {
+    .credits {
+      display: none;
+    }
+
+    #app {
+      margin-top: 0px;
+    }
+  }
 </style>

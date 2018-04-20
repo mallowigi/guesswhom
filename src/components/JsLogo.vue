@@ -1,8 +1,12 @@
 <template>
   <div class="container">
-    <img class="logo" v-bind:src="logoUrl" v-if="show"
-         v-bind:style="{ height: size + 'px', width: size + 'px' }"
-         v-bind:alt="altContext">
+    <transition name="fade">
+      <img class="logo"
+           v-bind:src="logoUrl"
+           v-if="show"
+           v-bind:style="{ height: size + 'px', width: size + 'px' }"
+           v-bind:alt="altContext">
+    </transition>
   </div>
 </template>
 
@@ -32,6 +36,7 @@
         currentLogo: 'currentLogo',
         gameFinished: 'gameFinished',
       }),
+      /** Returns the current logo filename */
       logoUrl() {
         if (!this.currentLogo.name) {
           return null;
@@ -39,6 +44,7 @@
 
         return `../static/logos/${this.prod ? this.currentLogo.uuid : this.currentLogo.name.toLowerCase()}.png`;
       },
+      /** Returns the current logo alt */
       altContext() {
         return this.gameFinished ? 'Learn more about this JavaScript Library' : 'Guess the logo';
       },
@@ -65,5 +71,23 @@
 </script>
 
 <style scoped>
+  .container {
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
 
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.75s
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0
+  }
+
+  img {
+    z-index: 1;
+    position: relative;
+  }
 </style>

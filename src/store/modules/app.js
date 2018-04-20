@@ -10,6 +10,7 @@ const state = {
   currentLogo: {},
   gameFinished: false,
   startTime: new Date().getTime(),
+  endTime: 0,
 };
 
 const getters = {
@@ -43,6 +44,12 @@ const getters = {
    * @returns {number | *}
    */
   startTime: state => state.startTime,
+  /**
+   * The end time
+   * @param state
+   * @returns {number}
+   */
+  endTime: state => state.endTime,
 };
 
 const actions = {
@@ -69,6 +76,13 @@ const actions = {
    * @param state
    */
   restartGame({ commit, state }) {
+    const shuffle = api.shuffle(state.tempLogos);
+    const logos = api.generateIds(shuffle);
+    const currentLogo = logos[0];
+
+    commit(constants.SET_LOGOS, { logos });
+    commit(constants.SET_AMOUNT, { amount: logos.length });
+    commit(constants.SET_CURRENT_LOGO, { currentLogo });
     commit(constants.START);
   },
 };
@@ -81,6 +95,20 @@ const mutations = {
    */
   [constants.TEMP_LOGOS](state, { tempLogos }) {
     state.tempLogos = tempLogos;
+  },
+  [constants.SET_LOGOS](state, { logos }) {
+    state.logos = logos;
+  },
+  [constants.SET_AMOUNT](state, { amount }) {
+    state.amount = amount;
+  },
+  [constants.SET_CURRENT_LOGO](state, { currentLogo }) {
+    state.currentLogo = currentLogo;
+  },
+  [constants.START](state) {
+    state.gameFinished = false;
+    state.startTime = new Date().getTime();
+    state.endTime = 0;
   },
 };
 
