@@ -2,7 +2,9 @@
   <div id="app">
     <progress-bar></progress-bar>
     <sound-toggle></sound-toggle>
+    <!--<login-view></login-view>-->
     <router-view v-on:save-score="saveScore"></router-view>
+    <credits class="credits"></credits>
   </div>
 </template>
 
@@ -12,6 +14,8 @@
   import {mapActions, mapGetters} from 'vuex';
   import ProgressBar from './components/ProgressBar';
   import SoundToggle from './components/SoundToggle';
+  import LoginView from './components/LoginView';
+  import Credits from './components/Credits';
 
   const config = {
     apiKey: 'AIzaSyC940dirP-cnec8FFczul_ClGVmMOwiPtU',
@@ -27,6 +31,8 @@
     components: {
       ProgressBar,
       SoundToggle,
+      LoginView,
+      Credits,
     },
     created() {
       this.initFirebase();
@@ -38,6 +44,7 @@
         'amount',
         'startTime',
         'endTime',
+        'routePath',
       ]),
     },
     methods: {
