@@ -8,6 +8,8 @@ const state = {
   logos: [],
   tempLogos: [],
   currentLogo: {},
+  previousLogo: {},
+  choices: [],
   gameFinished: false,
   startTime: new Date().getTime(),
   endTime: 0,
@@ -32,6 +34,18 @@ const getters = {
    * @returns {{}|state.currentLogo}
    */
   currentLogo: state => state.currentLogo,
+  /**
+   * The previous logo
+   * @param state
+   * @returns {*}
+   */
+  previousLogo: state => state.previousLogo,
+  /**
+   * The list of choices
+   * @param state
+   * @returns {*}
+   */
+  choices: state => state.choices,
   /**
    * Whether the game is finished
    * @param state
@@ -78,11 +92,16 @@ const actions = {
   restartGame({ commit, state }) {
     const shuffle = api.shuffle(state.tempLogos);
     const logos = api.generateIds(shuffle);
+    const amount = logos.length;
     const currentLogo = logos[0];
+    const previousLogo = {};
+    const choices = api.getAnswers(logos, amount, currentLogo.id);
 
     commit(constants.SET_LOGOS, { logos });
-    commit(constants.SET_AMOUNT, { amount: logos.length });
+    commit(constants.SET_AMOUNT, { amount });
     commit(constants.SET_CURRENT_LOGO, { currentLogo });
+    commit(constants.SET_PREVIOUS_LOGO, { previousLogo });
+    commit(constants.SET_CHOICES, { choices });
     commit(constants.START);
   },
 };
@@ -104,6 +123,12 @@ const mutations = {
   },
   [constants.SET_CURRENT_LOGO](state, { currentLogo }) {
     state.currentLogo = currentLogo;
+  },
+  [constants.SET_PREVIOUS_LOGO](state, { previousLogo }) {
+    state.previousLogo = previousLogo;
+  },
+  [constants.SET_CHOICES](state, { choices }) {
+    state.choices = choices;
   },
   [constants.START](state) {
     state.gameFinished = false;

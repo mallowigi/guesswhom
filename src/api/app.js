@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import * as axios from 'axios';
 
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000';
@@ -33,5 +34,31 @@ export default {
       id: index,
       ...item,
     }));
+  },
+
+  /**
+   * Get a list of answers
+   * @param logos
+   * @param count
+   * @param currentId
+   */
+  getAnswers(logos, count, currentId) {
+    let choices = [currentId];
+
+    let i = 1;
+    while (i < 4) {
+      const random = Math.floor(Math.random() * count);
+      const choice = logos[random];
+
+      if (!choices.includes(choice.id)) {
+        choices.push(choice.id);
+        i++;
+      }
+    }
+
+    // Shuffle choices
+    choices = this.shuffle(choices);
+
+    return choices.map(choiceId => logos[choiceId]);
   },
 };
