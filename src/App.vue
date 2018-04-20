@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <progress-bar></progress-bar>
     <router-view v-on:save-score="saveScore"></router-view>
   </div>
 </template>
@@ -8,6 +9,7 @@
   import * as firebase from 'firebase';
   import 'firebase/auth';
   import {mapActions, mapGetters} from 'vuex';
+  import ProgressBar from './components/ProgressBar';
 
   const config = {
     apiKey: 'AIzaSyC940dirP-cnec8FFczul_ClGVmMOwiPtU',
@@ -20,6 +22,9 @@
 
   export default {
     name: 'App',
+    components: {
+      ProgressBar,
+    },
     created() {
       this.initFirebase();
     },

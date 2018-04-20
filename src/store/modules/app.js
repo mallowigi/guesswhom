@@ -119,6 +119,11 @@ const actions = {
     commit(constants.INCREASE_COUNT);
   },
 
+  /**
+   * Set choices
+   * @param commit
+   * @param state
+   */
   setChoices({ commit, state }) {
     const choices = api.getAnswers(state.logos,
       state.amount,
@@ -151,6 +156,7 @@ const actions = {
     const previousLogo = {};
     const choices = api.getAnswers(logos, amount, currentLogo.id);
 
+    commit(constants.SET_COUNT, { answerCount: 0 });
     commit(constants.SET_LOGOS, { logos });
     commit(constants.SET_AMOUNT, { amount });
     commit(constants.SET_CURRENT_LOGO, { currentLogo });
@@ -223,6 +229,9 @@ const mutations = {
   },
   [constants.FEEDBACK](state, { feedback }) {
     state.feedback = feedback;
+  },
+  [constants.SET_COUNT](state, { answerCount }) {
+    state.answerCount = answerCount;
   },
   [constants.INCREASE_COUNT](state) {
     state.answerCount += 1;
