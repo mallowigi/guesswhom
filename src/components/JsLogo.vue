@@ -53,9 +53,8 @@
     watch: {
       /**
        * Watch for logoUrl to hide logos in between
-       * @param val
        */
-      logoUrl(val) {
+      logoUrl() {
         this.show = false;
         setTimeout(() => {
           this.show = true;
