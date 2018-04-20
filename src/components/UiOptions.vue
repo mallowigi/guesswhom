@@ -2,7 +2,9 @@
   <div class="container">
     <div class="flex-container">
       <RippleButton class="button" v-for="option in choices" v-bind:key="option.name"
-                    :id="option.id" :text="option.name"/>
+                    :id="option.id" :text="option.name"
+                    v-on:button-click="checkAnswer"
+      />
     </div>
   </div>
 </template>
@@ -19,6 +21,15 @@
         'choices',
       ]),
     },
+    methods: {
+      /**
+       * Send an event upwards
+       * @param id
+       */
+      checkAnswer(id) {
+        this.$emit('check-answer', id);
+      },
+    },
   };
 </script>
 
@@ -31,5 +42,24 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .button {
+    margin-top: 20px;
+  }
+
+  .button:nth-child(2n) {
+    margin-left: 32px;
+  }
+
+  @media (max-width: 447px) {
+    .button {
+      width: 100%;
+    }
+
+    .button {
+      margin-left: 32px !important;
+      margin-right: 32px !important;
+    }
   }
 </style>

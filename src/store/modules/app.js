@@ -7,12 +7,16 @@ import constants from '../mutations';
 const state = {
   logos: [],
   tempLogos: [],
+  amount: 0,
   currentLogo: {},
   previousLogo: {},
   choices: [],
   gameFinished: false,
   startTime: new Date().getTime(),
   endTime: 0,
+  user: null,
+  answerCount: 0,
+  feedback: false,
 };
 
 const getters = {
@@ -28,6 +32,12 @@ const getters = {
    * @returns {Array}
    */
   tempLogos: state => state.tempLogos,
+  /**
+   * Amount of logos (there is a lot!)
+   * @param state
+   * @returns {number|*}
+   */
+  amount: state => state.amount,
   /**
    * The current displayed logo
    * @param state
@@ -64,6 +74,24 @@ const getters = {
    * @returns {number}
    */
   endTime: state => state.endTime,
+  /**
+   * Connected user
+   * @param state
+   * @returns {*}
+   */
+  user: state => state.user,
+  /**
+   * List of answered questions
+   * @param state
+   * @returns {number}
+   */
+  answerCount: state => state.answerCount,
+  /**
+   * The feedback state
+   * @param state
+   * @returns {boolean|*}
+   */
+  feedback: state => state.feedback,
 };
 
 const actions = {
@@ -104,6 +132,31 @@ const actions = {
     commit(constants.SET_CHOICES, { choices });
     commit(constants.START);
   },
+
+  /**
+   * Send a finish Game mutation
+   * @param commit
+   */
+  finishGame({ commit }) {
+    commit(constants.FINISH);
+  },
+
+  /**
+   * Set the current user
+   * @param commit
+   * @param user
+   */
+  setUser({ commit }, user) {
+    commit(constants.SET_USER, { user });
+  },
+
+  /**
+   *
+   * @param commit
+   */
+  firebaseFeedback({ commit }) {
+    commit(constants.FEEDBACK, { feedback: true });
+  },
 };
 
 const mutations = {
@@ -130,10 +183,20 @@ const mutations = {
   [constants.SET_CHOICES](state, { choices }) {
     state.choices = choices;
   },
+  [constants.SET_USER](state, { user }) {
+    state.user = user;
+  },
   [constants.START](state) {
     state.gameFinished = false;
     state.startTime = new Date().getTime();
     state.endTime = 0;
+  },
+  [constants.FINISH](state) {
+    state.gameFinished = true;
+    state.endTime = new Date().getTime();
+  },
+  [constants.FEEDBACK](state, { feedback }) {
+    state.feedback = feedback;
   },
 };
 
