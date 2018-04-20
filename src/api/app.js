@@ -41,8 +41,9 @@ export default {
    * @param logos
    * @param count
    * @param currentId
+   * @param previousId
    */
-  getAnswers(logos, count, currentId) {
+  getAnswers(logos, count, currentId, previousId) {
     let choices = [currentId];
 
     let i = 1;
@@ -50,7 +51,7 @@ export default {
       const random = Math.floor(Math.random() * count);
       const choice = logos[random];
 
-      if (!choices.includes(choice.id)) {
+      if (!choices.includes(choice.id) && (!previousId || previousId !== choice.id)) {
         choices.push(choice.id);
         i++;
       }

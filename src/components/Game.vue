@@ -23,6 +23,9 @@
       ...mapGetters([
         'currentLogo',
         'gameFinished',
+        'logos',
+        'answerCount',
+        'amount',
       ]),
     },
     methods: {
@@ -30,12 +33,22 @@
         'initializeLogos',
         'restartGame',
         'finishGame',
+        'increaseCount',
+        'setCurrentLogo',
+        'setChoices',
       ]),
       checkAnswer(id) {
         if (this.currentLogo.id === id) {
-          // go to next logo
+          this.increaseCount();
+
+          if (this.answerCount === this.amount) {
+            this.finishGame();
+            this.$emit('save-score');
+          } else {
+            this.setCurrentLogo(this.logos[this.answerCount]);
+            this.setChoices();
+          }
         } else {
-          // show score
           this.finishGame();
           this.$emit('save-score');
         }

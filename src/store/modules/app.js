@@ -113,6 +113,32 @@ const actions = {
   },
 
   /**
+   * Increase answer count
+   */
+  increaseCount({ commit }) {
+    commit(constants.INCREASE_COUNT);
+  },
+
+  setChoices({ commit, state }) {
+    const choices = api.getAnswers(state.logos,
+      state.amount,
+      state.currentLogo.id,
+      state.previousLogo.id);
+    commit(constants.SET_CHOICES, { choices });
+  },
+
+  /**
+   * Change current logo
+   * @param commit
+   * @param state
+   * @param logo
+   */
+  setCurrentLogo({ commit, state }, logo) {
+    commit(constants.SET_PREVIOUS_LOGO, { previousLogo: state.currentLogo });
+    commit(constants.SET_CURRENT_LOGO, { currentLogo: logo });
+  },
+
+  /**
    * Initializes a new game
    * @param commit
    * @param state
@@ -197,6 +223,9 @@ const mutations = {
   },
   [constants.FEEDBACK](state, { feedback }) {
     state.feedback = feedback;
+  },
+  [constants.INCREASE_COUNT](state) {
+    state.answerCount += 1;
   },
 };
 
