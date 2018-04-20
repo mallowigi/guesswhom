@@ -2,6 +2,7 @@
   <div>
     <js-logo v-if="!gameFinished"></js-logo>
     <ui-options v-if="!gameFinished" v-on:check-answer="checkAnswer"></ui-options>
+    <result-page v-if="gameFinished"></result-page>
   </div>
 </template>
 
@@ -9,12 +10,14 @@
   import {mapActions, mapGetters} from 'vuex';
   import JsLogo from './JsLogo';
   import UiOptions from './UiOptions';
+  import ResultPage from './ResultPage';
 
   export default {
     name: 'Game',
     components: {
       JsLogo,
       UiOptions,
+      ResultPage,
     },
     computed: {
       ...mapGetters([
