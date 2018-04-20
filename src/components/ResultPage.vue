@@ -2,6 +2,9 @@
   <div class="container">
     <h1 v-bind:class="{'-long': insult.length > 50}">{{insult}}</h1>
     <h2>{{answerCount}} / {{amount}}</h2>
+    <button class="ripple-button button" v-on:click="restartGame">
+      Restart
+    </button>
 
     <div class="suggestion">
       <a v-bind:href="currentLogo.url" target="_blank">
@@ -17,7 +20,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
+  import {mapActions, mapGetters} from 'vuex';
   import JsLogo from './JsLogo';
 
   export default {
@@ -48,6 +51,11 @@
         return this.insults[random];
       },
     },
+    methods: {
+      ...mapActions([
+        'restartGame',
+      ]),
+    },
     data() {
       return {
         insults: [
@@ -77,5 +85,64 @@
 </script>
 
 <style scoped>
+  .container {
+    max-width: 600px;
+    margin-top: 80px;
+  }
 
+  h2 {
+    color: #008597;
+  }
+
+  h1, p {
+    color: #66BB6A;
+    margin: 0;
+  }
+
+  .button {
+    margin: 0 auto 20px;
+    display: block;
+  }
+
+  .ranking-link > h3 {
+    margin: 0;
+  }
+
+  .ranking-link,
+  .suggestion a {
+    text-decoration: none;
+    color: #66BB6A;
+  }
+
+  .ranking-link:hover,
+  .suggestion a:hover {
+    text-decoration: underline;
+  }
+
+  .suggestion a div {
+    margin: 20px;
+  }
+
+  @media screen and (max-width: 447px) {
+    .long-insult {
+      font-size: 22px;
+    }
+
+    .custom-tweet-button, .custom-github-button {
+      margin: 0.5em auto;
+    }
+  }
+
+  @media screen and (min-width: 448px) and (max-width: 546px) {
+    .long-insult {
+      font-size: 25px;
+    }
+  }
+
+  @media screen and (max-width: 620px) {
+    .container {
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+  }
 </style>
