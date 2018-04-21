@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <div class="logo">
-
+    <div class="logo-container">
+      <transition name="bounce">
+        <div class="logo" v-if="show">
+        </div>
+      </transition>
     </div>
 
-    <h1>Guess the JavaScript Framework!</h1>
+    <h1>Guess the <span class="foo">JavaScript</span> Framework!</h1>
     <h2>You know there are too much frameworks when there is a game for it!</h2>
     <RippleButton class="button"
                   text="Start Game"
@@ -28,11 +31,13 @@
     },
     data() {
       return {
+        show: false,
         gameStarted: false,
       };
     },
     created() {
       this.playStart();
+      setTimeout(() => { this.show = true; }, 1000);
     },
     computed: {
       ...mapGetters([]),
@@ -54,6 +59,18 @@
 </script>
 
 <style scoped>
+  .foo {
+    color: #ffcc00;
+    font-style: italic;
+  }
+
+  .logo-container {
+    width: 400px;
+    height: 400px;
+    display: block;
+    margin: auto;
+  }
+
   .logo {
     width: 400px;
     height: 400px;
@@ -81,4 +98,24 @@
     margin: 0 auto 20px;
     display: block;
   }
+
+  .bounce-enter-active {
+    animation: bounce-in 2s;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0);
+    }
+    20% {
+      transform: scale(1.2);
+    }
+    50% {
+      transform: scale(0.8);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
 </style>
