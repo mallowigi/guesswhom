@@ -36,23 +36,30 @@
         'increaseCount',
         'setCurrentLogo',
         'setChoices',
-        'playSound',
+        'playFinish',
+        'playCorrect',
+        'playFail',
+        'playStart',
       ]),
+      /**
+       * Check answer and move to the next question or fail/finish
+       * @param id
+       */
       checkAnswer(id) {
         if (this.currentLogo.id === id) {
           this.increaseCount();
 
           if (this.answerCount === this.amount) {
-            this.playSound('finish');
+            this.playFinish();
             this.finishGame();
             this.$emit('save-score');
           } else {
-            this.playSound('correct');
+            this.playCorrect();
             this.setCurrentLogo(this.logos[this.answerCount]);
             this.setChoices();
           }
         } else {
-          this.playSound('fail');
+          this.playFail();
           this.finishGame();
           this.$emit('save-score');
         }
@@ -60,6 +67,7 @@
     },
     async created() {
       await this.initializeLogos();
+      this.playStart();
       this.restartGame();
     },
   };

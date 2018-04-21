@@ -18,6 +18,11 @@ const wrong = new Howl({
   volume: 0.5,
 });
 
+const start = new Howl({
+  src: ['../../static/sounds/start.mp3', '../../static/sounds/start.ogg'],
+  volume: 0.5,
+});
+
 const state = {
   sound: window.localStorage.getItem('sound') ? JSON.parse(window.localStorage.getItem('sound')) : true,
 };
@@ -27,23 +32,22 @@ const getters = {
 };
 
 const actions = {
-  playSound({ state }, type) {
-    if (state.sound) {
-      switch (type) {
-        case 'finish':
-          gameEnd.play();
-          break;
-        case 'fail':
-          wrong.play();
-          break;
-        case 'correct':
-          correct.play();
-          break;
-        default:
-          break;
-      }
-    }
+  playFinish() {
+    gameEnd.play();
   },
+
+  playFail() {
+    wrong.play();
+  },
+
+  playCorrect() {
+    correct.play();
+  },
+
+  playStart() {
+    start.play();
+  },
+
   toggleSound({ commit }) {
     commit(constants.TOGGLE_SOUND);
   },
