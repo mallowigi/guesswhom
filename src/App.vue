@@ -2,7 +2,7 @@
   <div id="app">
     <progress-bar></progress-bar>
     <sound-toggle></sound-toggle>
-    <!--<login-view></login-view>-->
+    <profile-panel v-on:login="login" v-on:logout="logout"></profile-panel>
     <router-view v-on:save-score="saveScore"></router-view>
     <credits class="credits"></credits>
   </div>
@@ -14,7 +14,7 @@
   import {mapActions, mapGetters} from 'vuex';
   import ProgressBar from './components/ProgressBar';
   import SoundToggle from './components/SoundToggle';
-  import LoginView from './components/LoginView';
+  import ProfilePanel from './components/ProfilePanel';
   import Credits from './components/Credits';
 
   const config = {
@@ -31,7 +31,7 @@
     components: {
       ProgressBar,
       SoundToggle,
-      LoginView,
+      ProfilePanel,
       Credits,
     },
     created() {
@@ -99,32 +99,48 @@
           const snapshot = await firebase.database().ref(`/scores/${this.user.uid}`).once('value');
           const previousScore = snapshot.val();
           if (!previousScore) {
-            firebase.database.ref(`/scores/${this.user.uid}`).set(score);
+            firebase.database().ref(`/scores/${this.user.uid}`).set(score);
           } else if (this.shouldSaveNewScore(score, previousScore)) {
-            firebase.database.ref(`/scores/${this.user.uid}`).set(score);
+            firebase.database().ref(`/scores/${this.user.uid}`).set(score);
           }
         }
       },
-    },
 
-    /**
-     * Only save if the new score is better than the old one
-     * @param newScore
-     * @param oldScore
-     */
-    shouldSaveNewScore(newScore, oldScore) {
-      // The user could not answer more than one answer per second, that's cheating!
-      if ((newScore.endTime - newScore.startTime) <= this.answerCount * 1000) {
+      /**
+       * Only save if the new score is better than the old one
+       * @param newScore
+       * @param oldScore
+       */
+      shouldSaveNewScore(newScore, oldScore) {
+        // The user could not answer more than one answer per second, that's cheating!
+        if ((newScore.endTime - newScore.startTime) <= this.answerCount * 1000) {
+          return false;
+        }
+        // eslint-disable-next-line max-len
+        const betterTime = (newScore.endTime - newScore.startTime) <= (oldScore.endTime - oldScore.startTime);
+        if (newScore.answerCount > oldScore.answerCount) {
+          return true;
+        } else if (newScore.answerCount === oldScore.answerCount && betterTime) {
+          return true;
+        }
         return false;
-      }
-      // eslint-disable-next-line max-len
-      const betterTime = (newScore.endTime - newScore.startTime) <= (oldScore.endTime - oldScore.startTime);
-      if (newScore.answerCount > oldScore.answerCount) {
-        return true;
-      } else if (newScore.answerCount === oldScore.answerCount && betterTime) {
-        return true;
-      }
-      return false;
+      },
+
+      /**
+       * Logs with Github
+       */
+      async login() {
+        await firebase.auth().signInWithRedirect(new firebase.auth.GithubAuthProvider());
+      },
+
+      /**
+       * Logs out
+       */
+      async logout() {
+        await firebase.auth().signOut();
+        this.setUser(null);
+        this.$router.push('/');
+      },
     },
   };
 </script>

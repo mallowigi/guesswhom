@@ -24,7 +24,7 @@
       };
     },
     created() {
-      this.playStart();
+      // this.playStart();
     },
     computed: {
       ...mapGetters([]),
