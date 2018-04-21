@@ -2,7 +2,7 @@
   <div id="app">
     <progress-bar></progress-bar>
     <sound-toggle></sound-toggle>
-    <profile-panel v-on:login="login" v-on:logout="logout"></profile-panel>
+    <profile-panel v-on:login="login" v-on:logout="logoutAndDie"></profile-panel>
     <router-view v-on:save-score="saveScore"></router-view>
     <credits class="credits"></credits>
   </div>
@@ -51,6 +51,10 @@
         'login',
         'logout',
       ]),
+      logoutAndDie() {
+        this.logout();
+        this.$router.push('/');
+      },
     },
   };
 </script>

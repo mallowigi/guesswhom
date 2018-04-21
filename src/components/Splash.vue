@@ -6,6 +6,10 @@
                   text="Start Game"
                   v-on:button-click="startGame"
     />
+    <RippleButton class="button"
+                  text="High Scores"
+                  v-on:button-click="ranking"
+    />
   </div>
 </template>
 
@@ -24,7 +28,7 @@
       };
     },
     created() {
-      // this.playStart();
+      this.playStart();
     },
     computed: {
       ...mapGetters([]),
@@ -37,6 +41,9 @@
       startGame() {
         this.gameStarted = true;
         this.$router.push('/start');
+      },
+      ranking() {
+        this.$router.push('/ranking');
       },
     },
   };

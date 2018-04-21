@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import * as firebase from 'firebase';
 import 'firebase/auth';
+import constants from '../mutations';
 
 const config = {
   apiKey: 'AIzaSyC940dirP-cnec8FFczul_ClGVmMOwiPtU',
@@ -13,10 +14,12 @@ const config = {
 
 const state = {
   firebaseConfig: config,
+  highScores: [],
 };
 
 const getters = {
   firebaseConfig: state => state.firebaseConfig,
+  highScores: state => state.highScores,
 };
 
 const actions = {
@@ -83,7 +86,20 @@ const actions = {
   async logout({ dispatch }) {
     await firebase.auth().signOut();
     dispatch('setUser', null);
-    // this.$router.push('/');
+  },
+
+  async getHighScores({ commit }) {
+    const snapshot = await firebase.database().ref('/scores')
+    .orderByChild('answerCount')
+    .limitToLast(10)
+    .once('value');
+
+    if (snapshot.val()) {
+      // iterate over firebase entries
+      const results = snapshot.val();
+      const highScores = Object.values(results);
+      commit(constants.SET_HIGH_SCORES, { highScores });
+    }
   },
 
   /**
@@ -107,7 +123,11 @@ const actions = {
   },
 };
 
-const mutations = {};
+const mutations = {
+  [constants.SET_HIGH_SCORES](state, { highScores }) {
+    state.highScores = highScores;
+  },
+};
 
 export default {
   state,
