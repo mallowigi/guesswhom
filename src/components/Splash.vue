@@ -8,7 +8,7 @@
     </div>
 
     <h1>Guess the <span class="foo">JavaScript</span> Framework!</h1>
-    <h2>You know there are too much frameworks when there is a game for it!</h2>
+    <h2>You know there are too many frameworks when there is a game for it!</h2>
     <RippleButton class="button"
                   text="Start Game"
                   v-on:button-click="startGame"
@@ -87,6 +87,7 @@
 
   h2 {
     color: #008597;
+    padding: 0 10px;
   }
 
   h1, p {

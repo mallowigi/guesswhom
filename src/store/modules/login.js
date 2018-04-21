@@ -22,6 +22,26 @@ const getters = {
   highScores: state => state.highScores,
 };
 
+/**
+ * Only save if the new score is better than the old one
+ * @param newScore
+ * @param oldScore
+ */
+function shouldSaveNewScore(newScore, oldScore) {
+  // The user could not answer more than one answer per second, that's cheating!
+  if ((newScore.endTime - newScore.startTime) <= newScore.answerCount * 1000) {
+    return false;
+  }
+  // eslint-disable-next-line max-len
+  const betterTime = (newScore.endTime - newScore.startTime) <= (oldScore.endTime - oldScore.startTime);
+  if (newScore.answerCount > oldScore.answerCount) {
+    return true;
+  } else if (newScore.answerCount === oldScore.answerCount && betterTime) {
+    return true;
+  }
+  return false;
+}
+
 const actions = {
   /**
    * Init Firebase to save users upon authentication
@@ -51,24 +71,25 @@ const actions = {
   /**
    * Save score to firebase
    */
-  async saveScore({ state }) {
-    if (state.user) {
-      const name = state.user.displayName || state.user.email.substring(0, state.user.email.indexOf('@'));
+  async saveScore({ rootState }) {
+    const { app } = rootState;
+    if (app.user) {
+      const name = app.user.displayName || app.user.email.substring(0, app.user.email.indexOf('@'));
       const score = {
-        answerCount: state.answerCount,
-        amount: state.amount,
-        startTime: state.startTime,
-        endTime: state.endTime,
+        answerCount: app.answerCount,
+        amount: app.amount,
+        startTime: app.startTime,
+        endTime: app.endTime,
         name,
       };
 
       // Get previous score if there is
-      const snapshot = await firebase.database().ref(`/scores/${state.user.uid}`).once('value');
+      const snapshot = await firebase.database().ref(`/scores/${app.user.uid}`).once('value');
       const previousScore = snapshot.val();
       if (!previousScore) {
-        firebase.database().ref(`/scores/${state.user.uid}`).set(score);
-      } else if (this.shouldSaveNewScore(score, previousScore)) {
-        firebase.database().ref(`/scores/${state.user.uid}`).set(score);
+        firebase.database().ref(`/scores/${app.user.uid}`).set(score);
+      } else if (shouldSaveNewScore(score, previousScore)) {
+        firebase.database().ref(`/scores/${app.user.uid}`).set(score);
       }
     }
   },
@@ -102,25 +123,6 @@ const actions = {
     }
   },
 
-  /**
-   * Only save if the new score is better than the old one
-   * @param newScore
-   * @param oldScore
-   */
-  shouldSaveNewScore(newScore, oldScore) {
-    // The user could not answer more than one answer per second, that's cheating!
-    if ((newScore.endTime - newScore.startTime) <= this.answerCount * 1000) {
-      return false;
-    }
-    // eslint-disable-next-line max-len
-    const betterTime = (newScore.endTime - newScore.startTime) <= (oldScore.endTime - oldScore.startTime);
-    if (newScore.answerCount > oldScore.answerCount) {
-      return true;
-    } else if (newScore.answerCount === oldScore.answerCount && betterTime) {
-      return true;
-    }
-    return false;
-  },
 };
 
 const mutations = {
