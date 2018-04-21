@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <div class="logo">
+
+    </div>
+
     <h1>Guess the JavaScript Framework!</h1>
     <h2>You know there are too much frameworks when there is a game for it!</h2>
     <RippleButton class="button"
@@ -50,6 +54,16 @@
 </script>
 
 <style scoped>
+  .logo {
+    width: 400px;
+    height: 400px;
+    display: block;
+    background: url('../../static/frameworks.png') no-repeat;
+    background-size: cover;
+    margin: auto;
+    clip-path: circle(150px at center);
+  }
+
   .container {
     max-width: 600px;
   }
