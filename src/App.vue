@@ -36,6 +36,10 @@
     },
     created() {
       this.initFirebase();
+
+      if (this.route.path !== '/') {
+        this.$router.push('/');
+      }
     },
     computed: {
       ...mapGetters([
@@ -44,6 +48,7 @@
         'amount',
         'startTime',
         'endTime',
+        'route',
         'routePath',
       ]),
     },

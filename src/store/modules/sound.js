@@ -14,7 +14,6 @@ const correct = new Howl({
 
 const wrong = new Howl({
   src: ['../../static/sounds/gameover.mp3', '../../static/sounds/gameover.ogg'],
-  rate: 1.3,
   volume: 0.5,
 });
 

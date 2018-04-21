@@ -67,7 +67,6 @@
     },
     async created() {
       await this.initializeLogos();
-      this.playStart();
       this.restartGame();
     },
   };
