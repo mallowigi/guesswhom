@@ -19,7 +19,6 @@
     data() {
       return {
         show: false,
-        prod: process.env.NODE_ENV === 'production',
       };
     },
 
@@ -42,7 +41,7 @@
           return null;
         }
 
-        return `../static/logos/${this.prod ? this.currentLogo.uuid : this.currentLogo.name.toLowerCase()}.png`;
+        return `../static/logos/${this.currentLogo.name.toLowerCase()}.png`;
       },
       /** Returns the current logo alt */
       altContext() {
