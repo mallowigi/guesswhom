@@ -42,8 +42,8 @@
         const progress = (this.answerCount / this.amount) * 100 || 0;
         if (progress < 1) {
           return 'Do you even JavaScript bro?';
-        } else if (progress >= 100) {
-          return 'Congrats! Now go back to work';
+        } else if (progress >= 50) {
+          return 'You rule at JavaScript! Now go back to work!';
         }
 
         const count = this.insults.length;
