@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import * as axios from 'axios';
 
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:5000';
+const SERVER_URL = 'https://guesswhomjs.herokuapp.com:5000';
 
 export default {
   getLogos() {
