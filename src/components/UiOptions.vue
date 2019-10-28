@@ -1,9 +1,12 @@
 <template>
   <div class="container">
     <div class="flex-container">
-      <RippleButton class="button" v-for="option in choices" v-bind:key="option.name"
-                    :id="option.id" :text="option.name"
-                    v-on:button-click="checkAnswer"
+      <RippleButton class="button"
+        v-for="option in choices"
+        v-bind:key="option.name"
+        :id="option.id"
+        :text="option.name"
+        v-on:button-click="checkAnswer"
       />
     </div>
   </div>
@@ -15,11 +18,17 @@
 
   export default {
     name: 'UiOptions',
-    components: { RippleButton },
+    components: {RippleButton},
     computed: {
       ...mapGetters([
         'choices',
       ]),
+    },
+    mounted() {
+      window.addEventListener('keypress', this.checkKeyPress);
+    },
+    destroyed() {
+      window.removeEventListener('keypress', this.checkKeyPress);
     },
     methods: {
       /**
@@ -28,6 +37,11 @@
        */
       checkAnswer(id) {
         this.$emit('check-answer', id);
+      },
+      checkKeyPress(e) {
+        if (e.key > 0 && e.key < 5) {
+          this.checkAnswer(this.choices[e.key - 1].id);
+        }
       },
     },
   };

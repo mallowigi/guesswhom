@@ -55,6 +55,11 @@
       ...mapActions([
         'restartGame',
       ]),
+      restart(event) {
+        if (event.keyCode === 13) {
+          this.restartGame();
+        }
+      },
     },
     data() {
       return {
@@ -81,6 +86,13 @@
         ],
       };
     },
+    created() {
+      window.addEventListener('keypress', this.restart);
+    },
+    destroyed() {
+      window.removeEventListener('keypress', this.restart);
+    },
+
   };
 </script>
 

@@ -35,9 +35,13 @@
         gameStarted: false,
       };
     },
-    created() {
+    mounted() {
       this.playStart();
       setTimeout(() => { this.show = true; }, 1000);
+      window.addEventListener('keypress', this.restart);
+    },
+    deactivated() {
+      window.removeEventListener('keypress', this.restart);
     },
     computed: {
       ...mapGetters([]),
@@ -53,6 +57,11 @@
       },
       ranking() {
         this.$router.push('/ranking');
+      },
+      restart(event) {
+        if (event.keyCode === 13) {
+          this.startGame();
+        }
       },
     },
   };
